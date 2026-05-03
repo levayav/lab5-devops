@@ -7,6 +7,8 @@ on:
       - completed
     branches:
       - main
+      - dev
+  workflow_dispatch:
 
 jobs:
   cd:
@@ -16,6 +18,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
@@ -28,3 +32,4 @@ jobs:
         with:
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/my-app:latest
+          no-cache: true
